@@ -1,85 +1,67 @@
-from typing import Optional, overload
-from PySide2.QtCore import Qt
-from PySide2.QtGui import QTextDocument
-from PySide2.QtWidgets import QGridLayout, QLabel, QLayout, QPushButton, QTabBar, QTabWidget, QWidget
+from PySide2 import QtCore, QtGui, QtWidgets
+
+import typing
 
 
-class QCardWidget(QWidget):
+class QCardWidget(QtWidgets.QWidget):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        # Create QGridLayout as the layout manager for all Card widgets
-        self.__layout = QGridLayout()
-        self.__layout.setSizeConstraint(QLayout.SetMinimumSize)
-
         # Set QPushButton as the container for Card widgets
-        self.__button = QPushButton()
-        self.__button.setLayout(self.__layout)
+        self.__button = QtWidgets.QPushButton()
 
         # Create QGridLayout so QPushButton can be added to QWidget
-        layout = QGridLayout()
+        layout = QtWidgets.QGridLayout()
         layout.addWidget(self.__button)
         layout.setContentsMargins(0, 0, 0, 0)
-        self.setLayout(layout)
+        super().setLayout(layout)
 
-    @overload
-    def addWidget(self, arg__1: QWidget, row: int, column: int, rowSpan: int, columnSpan: int, alignment: Optional[Qt.Alignment]) -> None: ...
-    @overload
-    def addWidget(self, arg__1: QWidget, row: int, column: int, alignment: Optional[Qt.Alignment]) -> None: ...
-    @overload
-    def addWidget(self, w: QWidget) -> None: ...
-    
-    def addWidget(self, *args, **kwargs) -> None:
-        widget: QWidget = args[0] if len(args) > 0 else kwargs.get("arg__1", kwargs["w"])
-        row: Optional[int] = args[1] if len(args) > 1 else kwargs.get("row", None)
-        column: Optional[int] = args[2] if len(args) > 2 else kwargs.get("column", None)
-        rowSpan: Optional[int] = args[3] if len(args) > 3 else kwargs.get("rowSpan", None)
-        columnSpan: Optional[int] = args[4] if len(args) > 4 else kwargs.get("columnSpan", None)
-        alignment: Optional[Qt.Alignment] = args[5] if len(args) > 5 else kwargs.get("alignment", None)
+    def layout(self) -> QtWidgets.QLayout:
+        return self.__button.layout()
 
-        if not None in [row, column, rowSpan, columnSpan, alignment]:
-            self.__layout.addWidget(widget, row, column, rowSpan, columnSpan, alignment)
-        elif not None in [row, column, rowSpan, columnSpan]:
-            self.__layout.addWidget(widget, row, column, rowSpan, columnSpan)
-        elif not None in [row, column, alignment]:
-            self.__layout.addWidget(widget, row, column, alignment)
-        elif not None in [row, column]:
-            self.__layout.addWidget(widget, row, column)
-        else:
-            self.__layout.addWidget(widget)
-
-    def layout(self) -> QLayout:
-        return self.__layout
+    def setLayout(self, arg__1: QtWidgets.QLayout) -> None:
+        return self.__button.setLayout(arg__1)
 
     @property
     def clicked(self):
         return self.__button.clicked
 
-class QRichTabBar(QTabBar):
+class QRichTabBar(QtWidgets.QTabBar):
     def __init__(self, parent):
         super().__init__(parent)
 
-    def tabLabelText(self, index: int):
-        doc = QTextDocument()
-        doc.setHtml(self.tabButton(index, QTabBar.LeftSide).text())
+    def setTabText(self, index: int, text: str):
+        label = QtWidgets.QLabel(self)
+        label.setText(text)
+        label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        label.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents)
+
+        self.setTabButton(index, QtWidgets.QTabBar.LeftSide, label)
+
+    def tabText(self, index: int):
+        doc = QtGui.QTextDocument()
+        doc.setHtml(self.tabButton(index, QtWidgets.QTabBar.LeftSide).text())
         return doc.toPlainText()
 
-    def setTabLabelText(self, index: int, text: str):
-        label = QLabel(self)
-        label.setText(text)
-        label.setAttribute(Qt.WA_TranslucentBackground)
-        label.setAttribute(Qt.WA_TransparentForMouseEvents)
-
-        self.setTabButton(index, QTabBar.LeftSide, label)
-
-class QRichTabWidget(QTabWidget):
+class QRichTabWidget(QtWidgets.QTabWidget):
     def __init__(self, parent):
         super().__init__(parent)
-        self.tab = QRichTabBar(self)
-        self.setTabBar(self.tab)
+        self._tabBar = QRichTabBar(self)
+        self.setTabBar(self._tabBar)
 
-    def tabLabelText(self, index: int):
-        return self.tab.tabLabelText(index)
+    @typing.overload
+    def addTab(self, widget: QtWidgets.QWidget, arg__2: str) -> int: ...
+    @typing.overload
+    def addTab(self, widget: QtWidgets.QWidget, icon: QtGui.QIcon, label: str) -> int: ...
 
-    def setTabLabelText(self, index: int, text: str):
-        self.tab.setTabLabelText(index, text)
+    def addTab(self, *args, **kwargs) -> int:
+        index = super().addTab(*args, **kwargs)
+        self._tabBar.setTabText(index, super().tabText(index))
+        super().setTabText(index, "")
+        return index
+
+    def setTabText(self, index: int, text: str):
+        self._tabBar.setTabText(index, text)
+
+    def tabText(self, index: int):
+        return self._tabBar.tabText(index)
