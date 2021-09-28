@@ -58,6 +58,19 @@ class QRichTabWidget(QtWidgets.QTabWidget):
         index = super().addTab(*args, **kwargs)
         self._tabBar.setTabText(index, super().tabText(index))
         super().setTabText(index, "")
+
+        return index
+
+    @typing.overload
+    def insertTab(self, index: int, widget: QtWidgets.QWidget, arg__3: str) -> int: ...
+    @typing.overload
+    def insertTab(self, index: int, widget: QtWidgets.QWidget, icon: QtGui.QIcon, label: str) -> int: ...
+
+    def insertTab(self, *args, **kwargs) -> int:
+        index = super().insertTab(*args, **kwargs)
+        self._tabBar.setTabText(index, super().tabText(index))
+        super().setTabText(index, "")
+
         return index
 
     def setTabText(self, index: int, text: str):
