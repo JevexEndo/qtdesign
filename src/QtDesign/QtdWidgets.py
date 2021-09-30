@@ -56,8 +56,9 @@ class QRichTabWidget(QtWidgets.QTabWidget):
 
     def addTab(self, *args, **kwargs) -> int:
         index = super().addTab(*args, **kwargs)
-        self._tabBar.setTabText(index, super().tabText(index))
+        text = super().tabText(index)
         super().setTabText(index, "")
+        self._tabBar.setTabText(index, text)
 
         return index
 
@@ -68,8 +69,9 @@ class QRichTabWidget(QtWidgets.QTabWidget):
 
     def insertTab(self, *args, **kwargs) -> int:
         index = super().insertTab(*args, **kwargs)
-        self._tabBar.setTabText(index, super().tabText(index))
+        text = super().tabText(index)
         super().setTabText(index, "")
+        self._tabBar.setTabText(index, text)
 
         return index
 
