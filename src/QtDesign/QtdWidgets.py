@@ -7,24 +7,53 @@ class QCardWidget(QtWidgets.QWidget):
     def __init__(self, parent = None):
         super().__init__(parent)
 
-        # Set QPushButton as the container for Card widgets
-        self.__button = QtWidgets.QPushButton()
+        # Create button widget for card interactions
+        self.__button = QtWidgets.QPushButton(self)
+        self.__button.move(self.geometry().bottomRight() - self.__button.geometry().bottomRight())
+        self.__button.setFixedSize(self.size())
 
-        # Create QGridLayout so QPushButton can be added to QWidget
-        layout = QtWidgets.QGridLayout()
-        layout.addWidget(self.__button)
-        layout.setContentsMargins(0, 0, 0, 0)
-        super().setLayout(layout)
+    def isChecked(self) -> bool:
+        return self.__button.isChecked()
 
-    def layout(self) -> QtWidgets.QLayout:
-        return self.__button.layout()
+    def isEnabled(self) -> bool:
+        return self.__button.isEnabled()
 
-    def setLayout(self, arg__1: QtWidgets.QLayout) -> None:
-        return self.__button.setLayout(arg__1)
+    def setAutoDefault(self, arg__1: bool) -> None:
+        return self.__button.setAutoDefault(arg__1)
+
+    def setAutoRepeat(self, arg__1: bool) -> None:
+        return self.__button.setAutoRepeat(arg__1)
+
+    def setAutoRepeatDelay(self, arg__1: int) -> None:
+        return self.__button.setAutoRepeatDelay(arg__1)
+
+    def setAutoRepeatInterval(self, arg__1: int) -> None:
+        return self.__button.setAutoRepeatInterval(arg__1)
+
+    def setCheckable(self, arg__1: bool) -> None:
+        return self.__button.setCheckable(arg__1)
+
+    def setChecked(self, arg__1: bool) -> None:
+        return self.__button.setChecked(arg__1)
+
+    def setEnabled(self, arg__1: bool) -> None:
+        return self.__button.setEnabled(arg__1)
 
     @property
     def clicked(self):
         return self.__button.clicked
+
+    @property
+    def pressed(self):
+        return self.__button.pressed
+
+    @property
+    def released(self):
+        return self.__button.released
+
+    def resizeEvent(self, event: QtGui.QResizeEvent) -> None:
+        super().resizeEvent(event)
+        self.__button.setFixedSize(self.size())
 
 class QRichTabBar(QtWidgets.QTabBar):
     def __init__(self, parent):
