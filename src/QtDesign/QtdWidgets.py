@@ -3,7 +3,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 import typing
 
 
-class QCardWidget(QtWidgets.QWidget):
+class QCard(QtWidgets.QWidget):
     def __init__(self, parent = None):
         super().__init__(parent)
 
