@@ -21,7 +21,7 @@
 from PySide2.QtUiTools import QUiLoader
 from PySide2.QtCore import QDir, QMetaObject
 from PySide2.QtWidgets import QWidget
-from QtDesign.QtdWidgets import QCardWidget, QRichTabBar, QRichTabWidget
+from QtDesign.QtdWidgets import QCard, QRichTabBar, QRichTabWidget
 
 from typing import Optional
 
@@ -103,7 +103,7 @@ def loadUi(uifile, parent = None, customWidgets: 'dict[str, QWidget]' = {}, work
     return the newly created instance of the user interface.
     """
 
-    qtdWidgets = [QCardWidget, QRichTabBar, QRichTabWidget]
+    qtdWidgets = [QCard, QRichTabBar, QRichTabWidget]
 
     customWidgets.update({widget.__name__: widget for widget in qtdWidgets})
     loader = QDesignLoader(parent, customWidgets)
