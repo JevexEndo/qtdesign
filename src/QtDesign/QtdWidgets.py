@@ -8,52 +8,16 @@ class QCard(QtWidgets.QWidget):
         super().__init__(parent)
 
         # Create button widget for card interactions
-        self.__button = QtWidgets.QPushButton(self)
-        self.__button.move(self.geometry().bottomRight() - self.__button.geometry().bottomRight())
-        self.__button.setFixedSize(self.size())
+        self.__push_button = QtWidgets.QPushButton(self)
+        self.__push_button.move(self.geometry().bottomRight() - self.__push_button.geometry().bottomRight())
+        self.__push_button.setFixedSize(self.size())
 
-    def isChecked(self) -> bool:
-        return self.__button.isChecked()
-
-    def isEnabled(self) -> bool:
-        return self.__button.isEnabled()
-
-    def setAutoDefault(self, arg__1: bool) -> None:
-        return self.__button.setAutoDefault(arg__1)
-
-    def setAutoRepeat(self, arg__1: bool) -> None:
-        return self.__button.setAutoRepeat(arg__1)
-
-    def setAutoRepeatDelay(self, arg__1: int) -> None:
-        return self.__button.setAutoRepeatDelay(arg__1)
-
-    def setAutoRepeatInterval(self, arg__1: int) -> None:
-        return self.__button.setAutoRepeatInterval(arg__1)
-
-    def setCheckable(self, arg__1: bool) -> None:
-        return self.__button.setCheckable(arg__1)
-
-    def setChecked(self, arg__1: bool) -> None:
-        return self.__button.setChecked(arg__1)
-
-    def setEnabled(self, arg__1: bool) -> None:
-        return self.__button.setEnabled(arg__1)
-
-    @property
-    def clicked(self):
-        return self.__button.clicked
-
-    @property
-    def pressed(self):
-        return self.__button.pressed
-
-    @property
-    def released(self):
-        return self.__button.released
+    def pushButton(self) -> QtWidgets.QPushButton:
+        return self.__push_button
 
     def resizeEvent(self, event: QtGui.QResizeEvent) -> None:
         super().resizeEvent(event)
-        self.__button.setFixedSize(self.size())
+        self.__push_button.setFixedSize(self.size())
 
 class QRichTabBar(QtWidgets.QTabBar):
     def __init__(self, parent):
